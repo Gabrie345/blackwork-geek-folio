@@ -1,49 +1,8 @@
-import { useState } from 'react';
-import { Instagram, MessageCircle, MapPin, Clock, Phone, Mail } from 'lucide-react';
+import { Instagram, MessageCircle, MapPin, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/hooks/use-toast';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
-  });
-  const { toast } = useToast();
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Criar mensagem para WhatsApp
-    const whatsappMessage = `Olá! Gostaria de agendar uma sessão de tatuagem.
-    
-Nome: ${formData.name}
-Email: ${formData.email}
-Telefone: ${formData.phone}
-Mensagem: ${formData.message}`;
-    
-    const whatsappUrl = `https://wa.me/5511999999999?text=${encodeURIComponent(whatsappMessage)}`;
-    window.open(whatsappUrl, '_blank');
-    
-    toast({
-      title: "Redirecionando para WhatsApp",
-      description: "Você será redirecionado para o WhatsApp para finalizar seu agendamento.",
-    });
-    
-    // Limpar formulário
-    setFormData({ name: '', email: '', phone: '', message: '' });
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
 
   const contactInfo = [
     {
@@ -80,174 +39,77 @@ Mensagem: ${formData.message}`;
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Informações de Contato */}
+        <div className="max-w-4xl mx-auto">
+          {/* Informações de Contato - Mobile First */}
           <div className="space-y-8">
-            <div>
-              <h3 className="text-2xl font-semibold mb-6">Informações de Contato</h3>
-              <div className="space-y-6">
-                {contactInfo.map((info, index) => (
-                  <div key={index} className="flex items-start gap-4">
-                    <div className="text-accent mt-1">
-                      {info.icon}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-foreground">{info.title}</h4>
-                      <p className="text-muted-foreground">{info.content}</p>
-                      <p className="text-sm text-muted-foreground">{info.description}</p>
-                    </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+              {contactInfo.map((info, index) => (
+                <div key={index} className="text-center p-6 rounded-lg bg-card border">
+                  <div className="text-accent mb-3 flex justify-center">
+                    {info.icon}
                   </div>
-                ))}
-              </div>
+                  <h4 className="font-semibold text-foreground mb-1">{info.title}</h4>
+                  <p className="text-muted-foreground text-sm">{info.content}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{info.description}</p>
+                </div>
+              ))}
             </div>
 
-            {/* Links Sociais */}
-            <div>
-              <h3 className="text-2xl font-semibold mb-6">Redes Sociais</h3>
-              <div className="flex gap-4">
-                <Button 
-                  variant="outline" 
-                  size="lg"
-                  asChild
-                  className="hover:bg-accent hover:text-accent-foreground transition-colors duration-200"
+            {/* Botões de Contato - Mobile First */}
+            <div className="space-y-4">
+              <Button 
+                size="lg"
+                onClick={() => window.open('https://wa.me/5511999999999', '_blank')}
+                className="w-full glow-effect hover:scale-105 transition-transform duration-200 text-lg py-6"
+              >
+                <MessageCircle className="mr-3" size={24} />
+                Agendar via WhatsApp
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                size="lg"
+                asChild
+                className="w-full hover:bg-accent hover:text-accent-foreground transition-colors duration-200 text-lg py-6"
+              >
+                <a 
+                  href="https://www.instagram.com/araujotattoo_/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-3"
                 >
-                  <a 
-                    href="https://www.instagram.com/araujotattoo_/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2"
-                  >
-                    <Instagram size={20} />
-                    @araujotattoo_
-                  </a>
-                </Button>
-                
-                <Button 
-                  size="lg"
-                  onClick={() => window.open('https://wa.me/5511999999999', '_blank')}
-                  className="glow-effect hover:scale-105 transition-transform duration-200"
-                >
-                  <MessageCircle className="mr-2" size={20} />
-                  WhatsApp
-                </Button>
-              </div>
+                  <Instagram size={24} />
+                  Ver Portfolio no Instagram
+                </a>
+              </Button>
             </div>
 
-            {/* Processo de Agendamento */}
-            <Card className="deep-shadow">
-              <CardHeader>
-                <CardTitle>Como Funciona o Agendamento</CardTitle>
+            {/* Processo Simplificado */}
+            <Card className="deep-shadow mt-8">
+              <CardHeader className="text-center">
+                <CardTitle className="text-xl">Como Agendar</CardTitle>
                 <CardDescription>
-                  Processo simples e direto para sua comodidade
+                  Processo simples e rápido
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-sm font-bold">1</div>
-                    <div>
-                      <p className="font-medium">Consulta Inicial</p>
-                      <p className="text-sm text-muted-foreground">Conversamos sobre sua ideia e orçamento</p>
-                    </div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-8 h-8 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">1</div>
+                    <p className="text-sm">Clique no botão do WhatsApp</p>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-sm font-bold">2</div>
-                    <div>
-                      <p className="font-medium">Criação do Design</p>
-                      <p className="text-sm text-muted-foreground">Desenvolvimento do projeto personalizado</p>
-                    </div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-8 h-8 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">2</div>
+                    <p className="text-sm">Descreva sua ideia de tatuagem</p>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-sm font-bold">3</div>
-                    <div>
-                      <p className="font-medium">Execução</p>
-                      <p className="text-sm text-muted-foreground">Realização da tatuagem com todo cuidado</p>
-                    </div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-8 h-8 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">3</div>
+                    <p className="text-sm">Receba o orçamento e agende</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
           </div>
-
-          {/* Formulário de Contato */}
-          <Card className="deep-shadow">
-            <CardHeader>
-              <CardTitle>Solicitar Orçamento</CardTitle>
-              <CardDescription>
-                Preencha os dados abaixo e será redirecionado para o WhatsApp
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium mb-2">
-                      Nome *
-                    </label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      placeholder="Seu nome completo"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium mb-2">
-                      Telefone *
-                    </label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      required
-                      placeholder="(11) 99999-9999"
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">
-                    Email
-                  </label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="seu@email.com"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium mb-2">
-                    Descrição da Tatuagem *
-                  </label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    placeholder="Descreva sua ideia, estilo desejado, tamanho aproximado e localização no corpo..."
-                    rows={4}
-                  />
-                </div>
-                
-                <Button 
-                  type="submit" 
-                  size="lg" 
-                  className="w-full glow-effect hover:scale-105 transition-transform duration-200"
-                >
-                  <MessageCircle className="mr-2" size={20} />
-                  Enviar via WhatsApp
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </section>
